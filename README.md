@@ -6,7 +6,7 @@ VySOlator provides isolation of (virtual) networks based on VyOS. The goal of th
 Currently only one network (internet only) is provided but more will be added as the project progresses.
 
 # Process (steps)
-* Building the VyOS iso
+* Getting the VyOS ISO
 * Configure additional VMware networks
 * Create and configure the VyOS virtual machine
 * Troubleshooting
@@ -14,16 +14,16 @@ Currently only one network (internet only) is provided but more will be added as
     1. Use your favourite network attacks and ensure it works as intended
     1. Create a pull request or issue if you found a way to access something else than the internet
 
-## Building the VyOS iso
-A pre-build iso is available through VyOS (https://downloads.vyos.io/). However, building it from scratch allows for more granular control. Here are the steps for building the iso using docker:  
+## Getting the VyOS ISO
+Pre-build ISOs are available through the VyOS webiste (https://downloads.vyos.io/?dir=rolling/current/amd64/). However its also possible to "roll your own" if you so desire. Doing so will allow you to include certain packages (i.e. vim) to VyOS. The following steps explain the process of building an ISO using docker:  
 
-1. Install docker, you can use the script in this repository
+1. Clone the VySOlator repo and run the install-docker.sh script to install docker 
+    * cd /vysolator
+    * chmod +x install-docker.sh
     * sudo ./install-docker.sh
-1. Clone the VyOS repo and change the branch to crux 
+1. Clone the VyOs repo, build the docker image and create the iso
     * git clone https://github.com/vyos/vyos-build
     * cd vyos-build
-    * git checkout crux
-1. From within the vyos-build folder
     * sudo docker build -t vyos-builder docker
     * sudo docker run --rm -it --privileged -v $(pwd):/vyos -w /vyos vyos-builder bash
         * ./configure --custom-package vim --build-by DiabloHorn
@@ -35,7 +35,7 @@ The result of the above commands will be the iso created in the ```build``` dire
 We will add to new networks two VMWare (vmnet2,vmnet3) that have zero interaction with the host. Below are the configration steps per VMWare version:
 
 * [VMWare fusion and fusion pro](vmware-fusion_howto-add-interfaces.md)
-* VMware workstation (todo)
+* [VMware workstation](vmware-workstation_howto-add-interfaces.md)
 * VirtualBox (todo)
 
 ## Create and configure the VyOS virtual machine
